@@ -34,7 +34,9 @@ func register(mux *http.ServeMux, pattern string, handler func(http.ResponseWrit
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	accept := r.Header.Values("accept")
-	log.Printf("request from %s: accept:%v", r.RemoteAddr, accept)
+	contentType := r.Header.Values("content-type")
+	log.Printf("request from %s: accept:%v content-type:%v",
+		r.RemoteAddr, accept, contentType)
 
 	reqBody, errBody := io.ReadAll(r.Body)
 	if errBody != nil {

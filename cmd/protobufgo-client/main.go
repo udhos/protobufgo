@@ -44,7 +44,8 @@ func main() {
 		log.Fatalf("request error: %v", errReq)
 	}
 
-	req.Header.Add("accept", "application/octet-stream")
+	req.Header.Add("accept", "text/plain")
+	req.Header.Set("content-type", "application/octet-stream")
 
 	httpClient := http.DefaultClient
 
