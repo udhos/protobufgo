@@ -55,6 +55,8 @@ func main() {
 
 	defer resp.Body.Close()
 
+	log.Printf("sent protobuf addressbook: %v", book)
+
 	respBody, errBody := io.ReadAll(resp.Body)
 	if errBody != nil {
 		log.Fatalf("response body error: %v", errBody)

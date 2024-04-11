@@ -40,9 +40,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if errBody != nil {
 		msg := fmt.Sprintf("body error: %v", errBody)
 		log.Print(msg)
-		w.Header().Add("content-type", "text/plain")
-		w.WriteHeader(500)
-		fmt.Fprintln(w, msg)
+		http.Error(w, msg, 500)
 		return
 	}
 
@@ -50,23 +48,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if errProto := proto.Unmarshal(reqBody, book); errProto != nil {
 		msg := fmt.Sprintf("protobuf unmarshal addressbook error: %v", errProto)
 		log.Print(msg)
-		w.Header().Add("content-type", "text/plain")
-		w.WriteHeader(500)
-		fmt.Fprintln(w, msg)
+		http.Error(w, msg, 500)
 		return
 	}
 
-	log.Printf("protobuf addressbook: %v", book)
+	log.Printf("received protobuf addressbook: %v", book)
 
-	// 1/3. response headers
-
-	w.Header().Add("content-type", "application/octet-stream")
-
-	// 2/3. response status
-
-	w.WriteHeader(200)
-
-	// 3/3. response body
-
-	fmt.Fprintln(w, book)
+	http.Error(w, fmt.Sprint(book), 200)
 }
